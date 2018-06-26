@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+set timeout 10
+
+spawn scp linaro@10.30.50.223:/home/linaro/log/*.result /home/lwang/zl/shell/ssh/result
+
+#expect "*password*"
+
+#send "linaro\r"
+
+#sleep 1
+
+expect {
+"(yes/no)?"
+	{
+		send "yes\r"
+		expect "*assword:" {send "linaro\r"}	
+	}
+"*assword:"
+	{
+		send "linaro\r"
+	}
+}
+
+sleep 2

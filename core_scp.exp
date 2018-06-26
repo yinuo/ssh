@@ -1,0 +1,40 @@
+#!/usr/bin/expect
+
+set timeout 10
+set host [lindex $argv 0]
+set scp_ip [lindex $argv 1]
+set file_name [lindex $argv 2]
+
+spawn ssh linaro@$host
+
+expect {
+"(yes/no)?"
+	{
+		send "yes\r"
+		expect "*assword:" {send "linaro\r"}
+	}
+"*assword:"
+	{
+		send "linaro\r"
+	}
+}
+
+sleep 1
+
+send "scp linaro@$scp_ip:/data/test/bmnet/test.result /home/linaro/log/$file_name.result\r"
+
+expect {
+"(yes/no)?"
+	{
+		send "yes\r"
+		expect "*assword:" {send "linaro\r"}
+	}
+"*assword:"
+	{
+		send "linaro\r"
+	}
+}
+
+sleep 1
+
+#interact

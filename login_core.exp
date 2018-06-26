@@ -1,0 +1,44 @@
+#!/usr/bin/expect
+
+set timeout 10
+set host [lindex $argv 0]
+set core_ip [lindex $argv 1]
+
+spawn ssh linaro@$host
+
+expect {
+"(yes/no)?"
+	{
+		send "yes\r"
+		expect "*assword:" {send "linaro\r"}
+	}
+"*assword:"
+	{
+		send "linaro\r"
+	}
+}
+
+sleep 1
+
+send "ssh linaro@$core_ip\r"
+
+expect {
+"(yes/no)?"
+	{
+		send "yes\r"
+		expect "*assword:" {send "linaro\r"}
+	}
+"*assword:"
+	{
+		send "linaro\r"
+	}
+}
+sleep 1
+
+send "cd /data/test/bmnet\r"
+
+send "sudo ./test_bmnet.sh & \r"
+
+sleep 1
+
+#interact
